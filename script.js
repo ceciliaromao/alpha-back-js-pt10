@@ -6,16 +6,10 @@ let idSel = 0;
 let newProduct = true;
 
 function validateData(name, description, price) {
-  if (name === ''){
-    throw new Error(`Falha no cadastro do produto: Nome inválido!`);
-  }
-  if (description === ''){
-    throw new Error(`Falha no cadastro do produto: Descrição inválida!`);
-  }
-  if (isNaN(price) || price <= 0){
-    throw new Error(`Falha no cadastro do produto: Valor (${price}) inválido!`);
-  }
-
+  if (name === '') throw new Error(`Falha no cadastro do produto: Nome inválido!`);
+  if (description === '') throw new Error(`Falha no cadastro do produto: Descrição inválida!`);
+  if (isNaN(price) || price <= 0) throw new Error(`Falha no cadastro do produto: Valor (${price}) inválido!`);
+  
   let i = 0;
   while (i < allProducts.length) {
     if (allProducts[i].name.toLowerCase() === name.toLowerCase() && (newProduct|| allProducts[i].id != idSel)) {
@@ -43,14 +37,14 @@ function saveProduct() {
       document.querySelector('#details-ctn').style.display = 'none';
       id++;
       product = {
-        id: id,
-        name: name,
-        description: description,
-        price: price,
+        id,
+        name,
+        description,
+        price,
         createdAt: Date.now(),
       };
       allProducts.push(product);
-      msg.textContent = `Produto ${product.name} incluído com sucesso`;
+      msg.textContent = `Produto ${product.name.toLowerCase()} incluído com sucesso`;
     } else {
       let i = 0;
       while (i < allProducts.length) {
@@ -66,6 +60,9 @@ function saveProduct() {
         };
         i++;
       }
+    }
+
+    if (document.querySelector('#products-ctn').style.display == 'flex') {
       listProducts();
     }
     document.querySelector("#name").value = '';
@@ -83,6 +80,7 @@ function listProducts() {
   //let productsList  = localStorage.getItem('allProducts');
   if (allProducts.length === 0) {
     document.querySelector('#products-ctn').style.display = 'none';
+    document.querySelector('#details-ctn').style.display = 'none';
     msg.innerHTML = `Não há produtos cadastrados`;
   } else {
     const table = document.querySelector('#products-table');
@@ -142,7 +140,6 @@ function deleteProduct(Id) {
   allProducts = allProductsTmp;
   cancel();
   listProducts();
-  //closeModal();
 }
 
 function showProduct(Id) {
@@ -150,28 +147,28 @@ function showProduct(Id) {
   const date = new Date(allProducts[Id].createdAt);
 
   productDetails.innerHTML = `<tr> 
-                        <th colspan="2">Informações do Produto</th> 
-                      </tr>
-                      <tr> 
-                        <th>Id</th>
-                        <td>${allProducts[Id].id}</td> 
-                      </tr>
-                      <tr>  
-                        <th>Nome</th>
-                        <td>${allProducts[Id].name}</td> 
-                      </tr>
-                      <tr>  
-                         <th>Descrição</th>
-                         <td>${allProducts[Id].description}</td>  
-                      </tr>
-                      <tr>  
-                         <th>Valor</th>
-                         <td>${allProducts[Id].price.toFixed(2)}</td>
-                      </tr>
-                      <tr>  
-                        <th>Incluído Em</th>
-                        <td>${date.toLocaleDateString()} - ${date.toLocaleTimeString()}</td>
-                      </tr>`
+                                <th colspan="2">Detalhes do Produto</th> 
+                              </tr>
+                              <tr> 
+                                <th>Id</th>
+                                <td>${allProducts[Id].id}</td> 
+                              </tr>
+                              <tr>  
+                                <th>Nome</th>
+                                <td>${allProducts[Id].name}</td> 
+                              </tr>
+                              <tr>  
+                                <th>Descrição</th>
+                                <td>${allProducts[Id].description}</td>  
+                              </tr>
+                              <tr>  
+                                <th>Valor</th>
+                                <td>${allProducts[Id].price.toFixed(2)}</td>
+                              </tr>
+                              <tr>  
+                                <th>Incluído Em</th>
+                                <td>${date.toLocaleDateString()} - ${date.toLocaleTimeString()}</td>
+                              </tr>`
 
   document.querySelector('#details-ctn').style.display = 'flex';
 }
