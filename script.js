@@ -22,11 +22,11 @@ function validateData(name, description, price) {
       throw new Error(`Outro produto está cadastrado com este nome!`);
       //break;
     };
-    i += 1;
+    i++;
   }
 }
 
-function SaveProduct() {
+function saveProduct() {
   let name = document.querySelector("#name").value.trim();
   let description = document.querySelector("#description").value.trim();
   let price = parseFloat(document.querySelector('#price').value.replace(",", "."));
@@ -64,9 +64,9 @@ function SaveProduct() {
           }
           break;
         };
-        i += 1;
+        i++;
       }
-      ListProducts();
+      listProducts();
     }
     //localStorage.setItem('allProducts', allProducts);
   } catch (error) {
@@ -75,7 +75,7 @@ function SaveProduct() {
   }
 }
 
-function ListProducts() {
+function listProducts() {
   //let productsList  = localStorage.getItem('allProducts');
   if (allProducts.length === 0) {
     document.querySelector('#products-ctn').style.display = 'none';
@@ -96,7 +96,9 @@ function ListProducts() {
                             <td class="edit-icon" onclick="EditProduct(${i})"><i class="material-icons">edit</i></td>
                             <td class="del-icon" onclick="DeleteProduct(${i})"><i class="material-icons">delete</i></td>
                           </tr>`
-      i += 1;
+      //document.getElementById('yes').addEventListener('click', deleteProduct(i));
+      //document.getElementById('no').addEventListener('click', closeModal);
+      i++;
     }
     document.querySelector('#products-ctn').style.display = 'flex';
   }
@@ -116,18 +118,26 @@ function EditProduct(Id) {
   }
 }
 
-function DeleteProduct(Id) {
+function showModal() {
+  document.querySelector('.modal').style.display = 'flex';
+}
+
+function closeModal() {
+  document.querySelector('.modal').style.display = 'none';
+}
+
+function deleteProduct(Id) {
   let allProductsTmp = [];
   i = 0;
   while (i < allProducts.length) {
     if (i != Id) {
       allProductsTmp.push(allProducts[i]);
     }
-    i += 1;
+    i++;
   }
   allProducts = allProductsTmp;
   Cancel();
-  ListProducts();
+  listProducts();
 }
 
 function ShowProduct(Id) {
@@ -170,9 +180,8 @@ function Cancel() {
   document.querySelector("#save").textContent = 'Incluir produto';
   document.querySelector('#products-ctn').style.display = 'none';
   document.querySelector('#details-ctn').style.display = 'none';
-
 }
 
-document.getElementById('save').addEventListener('click', SaveProduct);
-document.getElementById('list').addEventListener('click', ListProducts);
+document.getElementById('save').addEventListener('click', saveProduct);
+document.getElementById('list').addEventListener('click', listProducts);
 document.getElementById('cancel').addEventListener('click', Cancel);

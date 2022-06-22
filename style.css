@@ -13,6 +13,9 @@ body {
 }
 
 main {
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -137,4 +140,41 @@ caption {
 
 .product{
   cursor: pointer;
+}
+
+.modal {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.673);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-card {
+  background-color: white;
+  width: 40vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3vh;
+}
+
+#modal-btns{
+  display: flex;
+  gap: 3vw;
+}
+
+#no {
+  background-color: red;
+}
+
+#no:hover {
+  background-color: rosybrown;
 }
