@@ -159,6 +159,7 @@ caption {
   background-color: white;
   width: 40vw;
   height: 20vh;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;

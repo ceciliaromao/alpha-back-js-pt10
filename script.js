@@ -2,7 +2,7 @@ const msg = document.querySelector('#msg');
 let allProducts = [];
 let product = {};
 let id = 0;
-let idSel = 0;
+let currentId = 0;
 let newProduct = true;
 
 function validateData(name, description, price) {
@@ -12,7 +12,7 @@ function validateData(name, description, price) {
   
   let i = 0;
   while (i < allProducts.length) {
-    if (allProducts[i].name.toLowerCase() === name.toLowerCase() && (newProduct|| allProducts[i].id != idSel)) {
+    if (allProducts[i].name.toLowerCase() === name.toLowerCase() && (newProduct|| allProducts[i].id != currentId)) {
       throw new Error(`Outro produto está cadastrado com este nome!`);
       //break;
     };
@@ -48,7 +48,7 @@ function saveProduct() {
     } else {
       let i = 0;
       while (i < allProducts.length) {
-        if (allProducts[i].id === idSel) {
+        if (allProducts[i].id === currentId) {
           allProducts[i].name = name;
           allProducts[i].description = description;
           allProducts[i].price = price;
@@ -69,7 +69,7 @@ function saveProduct() {
     document.querySelector("#description").value = '';
     document.querySelector('#price').value = '';
     document.querySelector("#save").textContent = 'Incluir produto';
-    //localStorage.setItem('allProducts', allProducts);
+    //localStorage.setItem('allProducts', JSON.stringify(allProducts));
   } catch (error) {
     msg.textContent = error;
     return false;
@@ -96,10 +96,8 @@ function listProducts() {
                             <td class="show-product" onclick="showProduct(${i})">${allProducts[i].name}</td> 
                             <td class="show-product" onclick="showProduct(${i})">${allProducts[i].price.toFixed(2)}</td>
                             <td class="edit-icon" onclick="editProduct(${i})"><i class="material-icons">edit</i></td>
-                            <td class="del-icon" onclick="deleteProduct(${i})"><i class="material-icons">delete</i></td>
+                            <td class="del-icon" onclick="showModal(${i})"><i class="material-icons">delete</i></td>
                           </tr>`
-      //document.getElementById('yes').addEventListener('click', deleteProduct(i));
-      //document.getElementById('no').addEventListener('click', closeModal);
       i++;
     }
     document.querySelector('#products-ctn').style.display = 'flex';
@@ -109,7 +107,7 @@ function listProducts() {
 function editProduct(Id) {
   msg.innerHTML = `&nbsp`;
   newProduct = false;
-  idSel = allProducts[Id].id;
+  currentId = allProducts[Id].id;
   document.querySelector("#save").textContent = 'Salvar produto';
   document.querySelector('#name').value = allProducts[Id].name;
   document.querySelector('#description').value = allProducts[Id].description;
@@ -120,12 +118,18 @@ function editProduct(Id) {
   }
 }
 
-function showModal() {
+function showModal(Id) {
   document.querySelector('.modal').style.display = 'flex';
+  document.querySelector('#modal-id').value = Id;
 }
 
 function closeModal() {
   document.querySelector('.modal').style.display = 'none';
+}
+
+function confirmDelete() {
+  const id = document.getElementById('modal-id').value;
+  deleteProduct(id);
 }
 
 function deleteProduct(Id) {
@@ -140,6 +144,7 @@ function deleteProduct(Id) {
   allProducts = allProductsTmp;
   cancel();
   listProducts();
+  closeModal();
 }
 
 function showProduct(Id) {
@@ -186,4 +191,6 @@ function cancel() {
 
 document.getElementById('save').addEventListener('click', saveProduct);
 document.getElementById('list').addEventListener('click', listProducts);
+document.getElementById('yes').addEventListener('click', confirmDelete);
+document.getElementById('no').addEventListener('click', closeModal);
 document.getElementById('cancel').addEventListener('click', cancel);
