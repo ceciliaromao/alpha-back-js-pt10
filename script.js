@@ -142,6 +142,7 @@ function deleteProduct(Id) {
   allProducts = allProductsTmp;
   cancel();
   listProducts();
+  //closeModal();
 }
 
 function showProduct(Id) {
