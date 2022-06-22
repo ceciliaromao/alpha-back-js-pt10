@@ -60,7 +60,7 @@ function saveProduct() {
           allProducts[i].price = price;
           msg.textContent = `Produto ${allProducts[i].name} editado com sucesso`;
           if (document.querySelector('#details-ctn').style.display === 'flex') {
-            ShowProduct(i);
+            showProduct(i);
           }
           break;
         };
@@ -68,6 +68,10 @@ function saveProduct() {
       }
       listProducts();
     }
+    document.querySelector("#name").value = '';
+    document.querySelector("#description").value = '';
+    document.querySelector('#price').value = '';
+    document.querySelector("#save").textContent = 'Incluir produto';
     //localStorage.setItem('allProducts', allProducts);
   } catch (error) {
     msg.textContent = error;
@@ -91,10 +95,10 @@ function listProducts() {
     let i = 0;
     while (i < allProducts.length) {
       table.innerHTML += `<tr> 
-                            <td class="show-product" onclick="ShowProduct(${i})">${allProducts[i].name}</td> 
-                            <td class="show-product" onclick="ShowProduct(${i})">${allProducts[i].price.toFixed(2)}</td>
-                            <td class="edit-icon" onclick="EditProduct(${i})"><i class="material-icons">edit</i></td>
-                            <td class="del-icon" onclick="DeleteProduct(${i})"><i class="material-icons">delete</i></td>
+                            <td class="show-product" onclick="showProduct(${i})">${allProducts[i].name}</td> 
+                            <td class="show-product" onclick="showProduct(${i})">${allProducts[i].price.toFixed(2)}</td>
+                            <td class="edit-icon" onclick="editProduct(${i})"><i class="material-icons">edit</i></td>
+                            <td class="del-icon" onclick="deleteProduct(${i})"><i class="material-icons">delete</i></td>
                           </tr>`
       //document.getElementById('yes').addEventListener('click', deleteProduct(i));
       //document.getElementById('no').addEventListener('click', closeModal);
@@ -104,7 +108,7 @@ function listProducts() {
   }
 }
 
-function EditProduct(Id) {
+function editProduct(Id) {
   msg.innerHTML = `&nbsp`;
   newProduct = false;
   idSel = allProducts[Id].id;
@@ -114,7 +118,7 @@ function EditProduct(Id) {
   document.querySelector('#price').value = allProducts[Id].price;
 
   if (document.querySelector('#details-ctn').style.display === 'flex') {
-    ShowProduct(Id);
+    showProduct(Id);
   }
 }
 
@@ -136,11 +140,11 @@ function deleteProduct(Id) {
     i++;
   }
   allProducts = allProductsTmp;
-  Cancel();
+  cancel();
   listProducts();
 }
 
-function ShowProduct(Id) {
+function showProduct(Id) {
   const productDetails = document.querySelector('#details-table');
   const date = new Date(allProducts[Id].createdAt);
 
@@ -171,7 +175,7 @@ function ShowProduct(Id) {
   document.querySelector('#details-ctn').style.display = 'flex';
 }
 
-function Cancel() {
+function cancel() {
   newProduct = true;
   msg.innerHTML = `&nbsp`;
   document.querySelector("#name").value = '';
@@ -184,4 +188,4 @@ function Cancel() {
 
 document.getElementById('save').addEventListener('click', saveProduct);
 document.getElementById('list').addEventListener('click', listProducts);
-document.getElementById('cancel').addEventListener('click', Cancel);
+document.getElementById('cancel').addEventListener('click', cancel);
